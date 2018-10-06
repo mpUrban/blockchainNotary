@@ -1,9 +1,4 @@
 
-//git remote add origin https://github.com/mpUrban/privateBlockchainWithWebAPI.git
-
-
-//TODO
-//1. undo hard coding of timeout limit
 
 const express = require('express');
 const app = express();
@@ -131,6 +126,27 @@ app.post('/requestValidation', async (req, res) => {
 
     }
 });
+
+
+///////////////////////////////////////////////////
+
+app.post('/message-signature/validate', async (req, res) => {
+    console.log('----------------------------');
+    console.log('Adding body data of: ' + (req.body.data));
+    if (!req.body.data) {
+        res.status(400).json({
+            "status": 400,
+            message: "Body data must not be empty"
+        })
+    }
+    else {
+        await blockchain.addBlock(new Block(req.body.data));
+        const height = await blockchain.getBlockHeight();
+        const response = await blockchain.getBlock(height);
+        res.send(response);
+    }
+});
+
 
 
 

@@ -73,5 +73,6 @@ create repo on remote github.com
 
 git init
 git remote add origin https://github.com/mpUrban/project
+need to stage/commit first?  
 git push -u origin master (if this fails, use the button)
 go to repo on github, add new file, type 'license' and then select a license

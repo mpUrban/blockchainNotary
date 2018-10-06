@@ -119,3 +119,17 @@ console.log('retrieved timestamp is: ' + mempool[1].requestTimeStamp);
 
 mempool.splice(reqIdx);
 console.log(mempool[reqIdx]);
+
+
+////////////////////////////////////////////////////////////////////
+//
+//test signing integration
+
+console.log('----------------------------');
+
+console.log('T/F of signature validation: ' + bitcoinMessage.verify(messageTest, addressTest, signatureTest));
+
+//let signatureTest = 'IJtpSFiOJrw/xYeucFxsHvIRFJ85YSGP8S1AEZxM4/obS3xr9iz7H0ffD7aM2vugrRaCi/zxaPtkflNzt5ykbc0='
+let signatureTestFail = 'IJtpSFiOJrw/xYeucFxsHvIRFJ85YSGP8S1AEZxM4/obS3xr9iz7H0ffD7aM2vugrRaCi/zxaPtkflNzt5ykZZZZ'
+
+console.log('T/F of signature validation: ' + bitcoinMessage.verify(messageTest, addressTest, signatureTestFail));
