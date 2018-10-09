@@ -16,7 +16,7 @@ const Block = require('./blockClass');
 
 const Response = require('./responseClass');
 
-const validationWindow = 10; //5 minutes per project requirements
+const validationWindow = 300; //5 minutes per project requirements (300s)
 
 const bitcoin = require('bitcoinjs-lib');
 const bitcoinMessage = require('bitcoinjs-message');
@@ -165,8 +165,9 @@ app.post('/message-signature/validate', async (req, res) => {
 
         ///////////////////////////  testing, switch later
         // since timestamp is part of message, need to hotwire in the matching timestamp
-        //let message2 = mempool[reqIdx2].message;
-        let message2 = '142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ:1532330740:starRegistry'
+
+        let message2 = mempool[reqIdx2].message;
+        //let message2 = '142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ:1532330740:starRegistry'
         ///////////////////////////  testing, switch later
         ///////////////////////////  testing, switch later
 

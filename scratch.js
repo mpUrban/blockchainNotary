@@ -188,15 +188,12 @@ console.log(jsonResponse);
 
 
 
+///////////////////////////////////////////////////////
 
-
-console.log('----------------------------');
-
-
+// console.log('----------------------------');
 // let addressElec = 'bc1q8h7elgd5dkj7yh0kuzdm7u2yagr577gkut3jad'
 // let messageElec = 'bc1q8h7elgd5dkj7yh0kuzdm7u2yagr577gkut3jad:1532330740:starRegistry'
 // let signatureElec = 'IBLfT8/mWYanJgRVq2aDC0HWNT5TgwrWIAYiToAbO0UGFE2QZQLmEXjP0Ecg5QbBi28N8eH5HK1j4oHqcLJoK2E='
-
 
 // let sigValidityFlagElec = bitcoinMessage.verify(messageElec, addressElec, signatureElec);
 // console.log('sigValidityFlagElec: '+ sigValidityFlagElec);
@@ -214,3 +211,19 @@ console.log('sigValidityFlagElecStd: '+ sigValidityFlagElecStd);
 
 
 
+
+
+
+console.log('----------------------------');
+
+payload3 = {
+    address: "142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ",
+    star: {
+        dec: "-26° 29'\'' 24.9",
+        ra: "16h 29m 1.0s",
+        story: "Found star using https://www.google.com/sky/"
+    }
+}
+
+console.log(payload3);
+console.log(payload3.star.dec);
