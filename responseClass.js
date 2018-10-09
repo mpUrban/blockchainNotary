@@ -1,5 +1,5 @@
 module.exports = class Response{
-  constructor(address){
+  constructor(address) {
      this.address = "";
      this.requestTimeStamp = 0;
      this.message = "";

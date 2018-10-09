@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "cd205720-deaf-4baf-8c95-204083238d92",
+		"name": "notary",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8000/requestValidation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"address\" : \"142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ\"}"
+				},
+				"url": {
+					"raw": "localhost:8000/requestValidation",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"requestValidation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/block",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\" : \"test body data\"}"
+				},
+				"url": {
+					"raw": "localhost:8000/block?",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"block"
+					],
+					"query": [
+						{
+							"key": "height",
+							"value": "11",
+							"disabled": true
+						}
+					]
+				},
+				"description": "testing addition of block"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/requestValidation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"address\" : \"142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ\"}"
+				},
+				"url": {
+					"raw": "localhost:8000/requestValidation",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"requestValidation"
+					]
+				},
+				"description": "testing request "
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8000/requestValidation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"address\" : \"\"}"
+				},
+				"url": {
+					"raw": "localhost:8000/requestValidation",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"requestValidation"
+					]
+				},
+				"description": "empty address test"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/message-signature/validate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ\",\n    \"signature\": \"H6ZrGrF0Y4rMGBMRT2+hHWGbThTIyhBS0dNKQRov9Yg6GgXcHxtO9GJN4nwD2yNXpnXHTWU9i+qdw5vpsooryLU=\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/message-signature/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"message-signature",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/message-signature/validate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ\",\n    \"signature\": \"IJtpSFiOJrw/xYeucFxsHvIRFJ85YSGP8S1AEZxM4/obS3xr9iz7H0ffD7aM2vugrRaCi/zxaPtkflNzt5yFAIL\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/message-signature/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"message-signature",
+						"validate"
+					]
+				},
+				"description": "false signature validation"
+			},
+			"response": []
+		}
+	]
+}
