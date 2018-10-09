@@ -83,7 +83,7 @@ app.post('/requestValidation', async (req, res) => {
     else {
         let nowTime = new Date().getTime().toString().slice(0, -3);
 
-        //is this redundant to repackage req.body into a new object?
+        //is this redundant to repackage req.body into a new object via a class constructor?
         resp = new Response;
         resp.validationWindow = validationWindow;
         resp.address = req.body.address;
@@ -141,6 +141,7 @@ let messageElecStd = '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt:1532330740:starRegistry
 let signatureElecStd = 'H0dFqcBJhBpRINpCHirDizr4eCfQiZyj63qC/g1kBQPLUETMb0qzmhwm48IakALeo0To74SqLERtRGCNq9gWCsw='
 
 
+validPool = [];
 
 app.post('/message-signature/validate', async (req, res) => {
     console.log('----------------------------');
@@ -175,34 +176,32 @@ app.post('/message-signature/validate', async (req, res) => {
         console.log('Timestamp of Signature Receipt: ' + nowTime2);
         let timeDiff2 = nowTime2 - reqTimeStamp2;
         
+        let status = {
+            address: req.body.address,
+            requestTimeStamp: reqTimeStamp2,
+            message: mempool[reqIdx2].message,
+            validationWindow: timeDiff2,
+            messageSignature: "invalid"
+        }
+
         let sigValidity = bitcoinMessage.verify(message2, req.body.address, req.body.signature);;
         if (!sigValidity) {
             console.log('Invalid signature');
         } else if (sigValidity) {
             if (timeDiff2 <= validationWindow) {
                 console.log("Ownership of blockchain address is verified");
+                status.messageSignature = 'valid'
+                validPool.push(status);
+                console.log('length of validPool: ' + validPool.length);
+                console.log('display status object: ' + JSON.stringify(validPool[validPool.length - 1]));
             } else {
-                sigValidity = false;
-                console.log('Verification time window has expired, please resubmit request');
-                console.log('Signature matches request address');
+                console.log("Time limit exceeded, request expired, please resubmit");
             }
-        }
-
-        //console.log('sig validity flag: '+ sigValidity);
-  
-        let status = {
-            address: req.body.address,
-            requestTimeStamp: reqTimeStamp2,
-            message: mempool[reqIdx2].message,
-            validationWindow: timeDiff2,
-            messageSignature: "valid"
-        }
-        
+        }  
         let resp2 = {
             registerStar: true,
             status: status
         }
-
         res.send(resp2);
     }
 });

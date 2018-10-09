@@ -50,6 +50,8 @@ npm install <packagename> --save
 
 ## API testing
 
+Since a front-end web UI does not exist yet, an API tester is used in place.  Postman & Curl are two options.  For development of this app, postman is used.  
+
 ### GET testing, view the genesis block
 With server running, navigate to [localhost:8000/block/0](http://localhost:8000/block/0)
 
