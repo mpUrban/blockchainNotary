@@ -216,8 +216,8 @@ console.log('sigValidityFlagElecStd: '+ sigValidityFlagElecStd);
 
 console.log('----------------------------');
 
-payload3 = {
-    address: "142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ",
+payload = {
+    address: "1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt",
     star: {
         dec: "-26° 29'\'' 24.9",
         ra: "16h 29m 1.0s",
@@ -225,5 +225,19 @@ payload3 = {
     }
 }
 
-console.log(payload3);
-console.log(payload3.star.dec);
+//console.log(payload);
+//console.log(payload3.star.dec);
+
+hexString = new Buffer(payload.star.story).toString('hex');
+
+console.log(hexString);
+
+
+
+// get byte count of sring
+// https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string
+
+
+//console.log(encodeURI(payload.star.story).split(/%..|./).length - 1);
+let byteCount = encodeURI(payload.star.story).split(/%..|./).length - 1;
+console.log(byteCount);

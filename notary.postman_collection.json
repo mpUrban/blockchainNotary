@@ -181,6 +181,115 @@
 				"description": "false signature validation"
 			},
 			"response": []
+		},
+		{
+			"name": "localhost:8000/requestValidation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"address\" : \"1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt\"}"
+				},
+				"url": {
+					"raw": "localhost:8000/requestValidation",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"requestValidation"
+					]
+				},
+				"description": "electrum requestValidation testing"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/message-signature/validate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"address\": \"1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt\",\n    \"signature\": \"H0rg1Sz2TJz8DWeSRGFUzO6TqQ9kFQimSg9daumScdNNeKsz0pq1Zm1h24VAgnGkl1zOj/LO7wrDJy9GprtA4kc=\"\n}\n\n\n"
+				},
+				"url": {
+					"raw": "http://localhost:8000/message-signature/validate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"message-signature",
+						"validate"
+					]
+				},
+				"description": "electrum valide testing"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/block",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"address\": \"1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt\",\n\t\"star\":{\n\t\t\"dec\": \"-26° 29\\\\' 24.9\",\n\t\t\"ra\": \"16h 29m 1.0s\",\n\t\t\"story\": \"Found star using https://www.google.com/sky/\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8000/block",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"block"
+					]
+				},
+				"description": "star request following signature validation\nnote the apostrophe is escaped with a double //"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/block/24",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8000/block/24",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"block",
+						"24"
+					]
+				},
+				"description": "read block test"
+			},
+			"response": []
 		}
 	]
 }

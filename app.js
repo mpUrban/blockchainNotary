@@ -49,22 +49,52 @@ app.get('/block/:id', async (req, res) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+
+
+
+
+
+
+
 app.post('/block', async (req, res) => {
     console.log('----------------------------');
-    console.log('Adding body data of: ' + (req.body.data));
-    if (!req.body.data) {
+    //NOTE: when using postman, do \\' to escape apostrophe, not the same in curl
+    //console.log('Received star registration request object: ' + JSON.stringify(req.body));
+    if (!req.body.address || !req.body.star) {
         res.status(400).json({
             "status": 400,
-            message: "Body data must not be empty"
+            message: "Address and requested star must both be present"
         })
-    }
-    else {
-        await blockchain.addBlock(new Block(req.body.data));
-        const height = await blockchain.getBlockHeight();
-        const response = await blockchain.getBlock(height);
-        res.send(response);
+    } else if (encodeURI(req.body.star.story).split(/%..|./).length - 1 > 500) {
+        res.status(400).json({
+            "status": 400,
+            message: "Star story size must not exceed 500 bytes"
+        })
+    } else {
+        //console.log(req.body.address);
+        //console.log(validPool[0].address);
+        let starIdx = validPool.findIndex(f => f.address === req.body.address);
+        console.log('index of validated address in validPool: ' + starIdx);
+        if (starIdx >= 0) {
+            req.body.star.story = new Buffer(req.body.star.story).toString('hex'); //hex-encoding
+            await blockchain.addBlock(new Block(req.body));
+            const height = await blockchain.getBlockHeight();
+            const response = await blockchain.getBlock(height);
+            res.send(response);
+        } else {
+            res.status(400).json({
+                "status": 400,
+                message: "Public address not verified"
+            })
+        }
     }
 });
+
+
+
+
+
 
 
 
@@ -95,6 +125,7 @@ app.post('/requestValidation', async (req, res) => {
             //console.log(mempool.findIndex(f => f.address === req.body.address));
             console.log('Address received: ' + (req.body.address));
             console.log('Request will only be valid for 5 minutes.');
+            console.log('Message to sign/verify: ' + (req.body.message));
             console.log('Please validate at */message-signature/validate');
             console.log('Mempool length is: ' + mempool.length);
             console.log('');
@@ -133,33 +164,53 @@ app.post('/requestValidation', async (req, res) => {
 });
 
 
+
+
+
+
+
+
 ///////////////////////////////////////////////////
 
 //TEST message set from standard electrum wallet
-let addressElecStd = '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt'
-let messageElecStd = '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt:1532330740:starRegistry'
-let signatureElecStd = 'H0dFqcBJhBpRINpCHirDizr4eCfQiZyj63qC/g1kBQPLUETMb0qzmhwm48IakALeo0To74SqLERtRGCNq9gWCsw='
-
+// let addressElecStd = '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt'
+// let messageElecStd = '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt:1532330740:starRegistry'
+// let signatureElecStd = 'H0dFqcBJhBpRINpCHirDizr4eCfQiZyj63qC/g1kBQPLUETMb0qzmhwm48IakALeo0To74SqLERtRGCNq9gWCsw='
+// let statusTest = {
+//     address: addressElecStd,
+//     requestTimeStamp: '1539107147',
+//     message: messageElecStd,
+//     validationWindow: '50',
+//     messageSignature: "valid"
+// }
 
 validPool = [];
 
+//validPool.push(statusTest);
+//console.log('validPool: ' + JSON.stringify(validPool[0]));
+
+
+
 app.post('/message-signature/validate', async (req, res) => {
     console.log('----------------------------');
+    //console.log('req body address: '+ req.body.address)
     if (!req.body.address || !req.body.signature) {
         res.status(400).json({
             "status": 400,
             message: "Address & signature data must not be empty"
         })
-    }
-    else {
-        //don't know how to build class constructor for this response object
-        //for testing, be sure to first send a request to */requestValidation
-        //
-        //console.log(req.body.address);
-        //console.log(req.body.signature);
-        
+    } else if (mempool.findIndex(f => f.address === req.body.address) === -1) {
+        console.log("A request for this address does not exist... submit at */requestValidation");
+        res.status(400).json({
+            "status": 400,
+            message: "A request for this address does not exist... submit at */requestValidation"
+        })
+    } else if (mempool.findIndex(f => f.address === req.body.address) >= 0) {
+        console.log(mempool.findIndex(f => f.address === req.body.address));
         let reqIdx2 = mempool.findIndex(f => f.address === req.body.address);
         //console.log(reqIdx2);
+
+        //if request isn't made, this will bomb the app
         let reqTimeStamp2 = mempool[reqIdx2].requestTimeStamp;
         //console.log(mempool[reqIdx2].requestTimeStamp);
         //console.log(reqTimeStamp2);
@@ -190,9 +241,10 @@ app.post('/message-signature/validate', async (req, res) => {
         } else if (sigValidity) {
             if (timeDiff2 <= validationWindow) {
                 console.log("Ownership of blockchain address is verified");
+                console.log("Please proceed to */block to complete star registration");
                 status.messageSignature = 'valid'
                 validPool.push(status);
-                console.log('length of validPool: ' + validPool.length);
+
                 console.log('display status object: ' + JSON.stringify(validPool[validPool.length - 1]));
             } else {
                 console.log("Time limit exceeded, request expired, please resubmit");
@@ -205,6 +257,10 @@ app.post('/message-signature/validate', async (req, res) => {
         res.send(resp2);
     }
 });
+
+
+
+
 
 
 
