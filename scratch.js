@@ -234,10 +234,44 @@ console.log(hexString);
 
 
 
-// get byte count of sring
+// get byte count of string
 // https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string
 
 
 //console.log(encodeURI(payload.star.story).split(/%..|./).length - 1);
 let byteCount = encodeURI(payload.star.story).split(/%..|./).length - 1;
 console.log(byteCount);
+
+
+
+//////////////////////////////////////////////////////////
+// test retreive block from level with non-height key
+//https://www.slideshare.net/aniruddha.chakrabarti/level-db-quick-cheat-sheet
+
+console.log('----------------------------');
+
+addressTest3 = '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt';
+
+//const blockRes = await blockchain.getBlock(height);
+
+const Blockchain = require('./blockchainClass');
+const Block = require('./blockClass');
+const level = require('level'); 
+
+let blockchain = new Blockchain();
+
+// let testHeight = blockchain.getBlockHeight();
+// testHeight.then(function(result) {
+//     console.log('Test Block height: ' + result);
+// })
+
+
+let blockPool = blockchain.getAllBlocks();
+blockPool.then(function(result) {
+    //console.log('Test Block height: ' + result);
+})
+
+
+//console.log(JSON.stringify(blockPool[testHeight]));
+console.log(blockPool.length);
+

@@ -152,8 +152,7 @@ app.post('/requestValidation', async (req, res) => {
                 console.log('Please validate at */message-signature/validate');
                 console.log('Mempool length is: ' + mempool.length);
                 console.log('');
-                //remove expired entry before push
-                mempool.splice(reqIdx);
+                mempool.splice(reqIdx); //remove expired entry before push
                 mempool.push(resp);
             }
         }
@@ -257,6 +256,28 @@ app.post('/message-signature/validate', async (req, res) => {
         res.send(resp2);
     }
 });
+
+
+
+
+
+
+
+app.get('/stars/:address', async (req, res) => {
+    //need to find block corresponding to address
+
+    console.log(req.params.address);
+    
+    // const blockRes = await blockchain.getBlock(height);
+    // if (blockRes) {
+    //     res.send(blockRes) // server response 
+    // } else {
+    //     res.status(404).send("Block Not Found")
+    // }
+});
+
+
+
 
 
 

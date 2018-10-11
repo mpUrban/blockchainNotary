@@ -94,5 +94,9 @@ module. exports = class Blockchain {
         }
         //console.log(errorLog.length);
         //console.log(errorLog);
-    } //validateChain      
+    } //validateChain 
+    async getAllBlocks() {
+        const blockPool = await leveldb.getAllBlocks();
+        return blockPool;
+    } //getAllBlocks     
 } //Blockchain Class

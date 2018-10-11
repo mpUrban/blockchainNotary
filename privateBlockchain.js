@@ -35,6 +35,7 @@ let blockchain = new Blockchain();
 // })(0);
 
 
+
 //this chunk will replace block 2 with an invalid block for testing 
 
 // blockchain.getBlock(2).then((block) => {     // where bc is a Blockchain instance and you've added at least 2 blocks
