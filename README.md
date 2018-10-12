@@ -91,15 +91,15 @@ With server running, navigate to [localhost:8000/block/0](http://localhost:8000/
 For testing of adding blocks through http POST, the application Postman is used.  
 
 Example of testing Postman:
-![alt text][logo]
+![alt text][postman]
 
-[logo]: https://github.com/mpUrban/privateBlockchainWithWebAPI/blob/master/postman_POSTtest1.PNG "Postman test example"
+[postman]: https://github.com/mpUrban/privateBlockchainWithWebAPI/blob/master/postman_POSTtest1.PNG "Postman test example"
 
 ### Signing a message via Electrum Wallet
 
 Navigate to the address tab, right-click on the address used to submit for registration, and select 'Sign/verify Message.'  
 
 Example of signing with Electrum:
-![alt][logo]
+![alt][signing]
 
-[logo]: https://github.com/mpUrban/blockchainNotary/blob/step-3/electrum_signing.PNG "Postman test example"
+[signing]: https://github.com/mpUrban/blockchainNotary/blob/step-3/electrum_signing.PNG "Postman test example"
