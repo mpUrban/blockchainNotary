@@ -220,7 +220,7 @@ app.post('/message-signature/validate', async (req, res) => {
         ///////////////////////////  testing, switch later
 
         let nowTime2 = new Date().getTime().toString().slice(0, -3)
-        console.log('Timestamp of Signature Receipt: ' + nowTime2);
+        console.log('Timestamp of signature receipt: ' + nowTime2);
         let timeDiff2 = nowTime2 - reqTimeStamp2;
         
         let status = {

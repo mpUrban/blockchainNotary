@@ -44,8 +44,6 @@ function getBlockHeight() {
       });
   });
 }
-
-
 // function getAllBlocks() {
 //   return new Promise((resolve, reject) => {
 //     //let height = -1; 
