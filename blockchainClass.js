@@ -2,7 +2,7 @@ const Block = require('./blockClass');
 const leveldb = require('./levelFunctions');
 const SHA256 = require('crypto-js/sha256');
 
-module. exports = class Blockchain {
+module.exports = class Blockchain {
     constructor() {
         this.getBlockHeight().then((height) => {
             if (height === -1) {
@@ -95,8 +95,17 @@ module. exports = class Blockchain {
         //console.log(errorLog.length);
         //console.log(errorLog);
     } //validateChain 
+    
     async getAllBlocks() {
-        const blockPool = await leveldb.getAllBlocks();
-        return blockPool;
-    } //getAllBlocks     
+        let blockPool = [];
+        const height = await this.getBlockHeight();
+        //
+        for (let i = 0; i <= height; i++) {
+            await this.getBlock(i).then((block) => {
+                blockPool.push(block);
+                //console.log(JSON.stringify(blockPool[i]));
+            });
+        } //loop
+        return blockPool
+    } //getAllBlocks
 } //Blockchain Class

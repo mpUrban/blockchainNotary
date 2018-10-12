@@ -85,7 +85,7 @@ app.post('/block', async (req, res) => {
         } else {
             res.status(400).json({
                 "status": 400,
-                message: "Public address not verified"
+                message: "Public address not verifiedk"
             })
         }
     }
@@ -119,13 +119,14 @@ app.post('/requestValidation', async (req, res) => {
         resp.address = req.body.address;
         resp.requestTimeStamp = nowTime;
         resp.message = resp.address + ':' + resp.requestTimeStamp + ':starRegistry';
+        console.log(resp.message);
         
         if (mempool.findIndex(f => f.address === req.body.address) === -1) {
             console.log('----------------------------');
             //console.log(mempool.findIndex(f => f.address === req.body.address));
             console.log('Address received: ' + (req.body.address));
             console.log('Request will only be valid for 5 minutes.');
-            console.log('Message to sign/verify: ' + (req.body.message));
+            console.log('Message to sign/verify: ' + (resp.message));
             console.log('Please validate at */message-signature/validate');
             console.log('Mempool length is: ' + mempool.length);
             console.log('');
@@ -156,9 +157,7 @@ app.post('/requestValidation', async (req, res) => {
                 mempool.push(resp);
             }
         }
-
         res.send(resp);
-
     }
 });
 
@@ -188,8 +187,6 @@ validPool = [];
 //validPool.push(statusTest);
 //console.log('validPool: ' + JSON.stringify(validPool[0]));
 
-
-
 app.post('/message-signature/validate', async (req, res) => {
     console.log('----------------------------');
     //console.log('req body address: '+ req.body.address)
@@ -205,7 +202,7 @@ app.post('/message-signature/validate', async (req, res) => {
             message: "A request for this address does not exist... submit at */requestValidation"
         })
     } else if (mempool.findIndex(f => f.address === req.body.address) >= 0) {
-        console.log(mempool.findIndex(f => f.address === req.body.address));
+        //console.log(mempool.findIndex(f => f.address === req.body.address));
         let reqIdx2 = mempool.findIndex(f => f.address === req.body.address);
         //console.log(reqIdx2);
 
@@ -223,7 +220,7 @@ app.post('/message-signature/validate', async (req, res) => {
         ///////////////////////////  testing, switch later
 
         let nowTime2 = new Date().getTime().toString().slice(0, -3)
-        console.log('Timestamp of Signature Receipt: ' + nowTime2);
+        console.log('Timestamp of signature receipt: ' + nowTime2);
         let timeDiff2 = nowTime2 - reqTimeStamp2;
         
         let status = {
@@ -264,19 +261,59 @@ app.post('/message-signature/validate', async (req, res) => {
 
 
 app.get('/stars/:address', async (req, res) => {
-    //need to find block corresponding to address
+    // LANDMINES
+    //1  address entering api has prefix to chop off
+    //2  old blocks in chain cause findIndex() method to fail - replace
+    //3  genesis block does not have all body properties for findIndex() to work
+    //4  does js shallow copy by default?  
 
-    console.log(req.params.address);
+    // TODO
+    //
+
+    console.log('----------------------------');
+     //let lookupAddress = req.params.address.slice(8); //removing address: prefix
     
-    // const blockRes = await blockchain.getBlock(height);
-    // if (blockRes) {
-    //     res.send(blockRes) // server response 
-    // } else {
-    //     res.status(404).send("Block Not Found")
-    // }
+    console.log('Received request: ' + req.params.address);
+    let lookup  = req.params.address.split(':');
+    console.log('lookup prefix: ' + lookup[0]);
+    console.log('lookup value: ' + lookup[1]);
+
+    const blockPool = await blockchain.getAllBlocks();
+
+    blockPool.shift();
+    // let blockPoolShift = Object.assign({}, blockPool);
+    //console.log(Object.getOwnPropertyNames(blockPoolShift[height-1]));
+
+    if (lookup[0] === 'address') {
+        const adrFinds = blockPool.filter(f => f.body.address === lookup[1]);
+ 
+        adrFinds.forEach(function(obj) { 
+            obj.body.star.storyDecoded = (new Buffer(obj.body.star.story, 'hex')).toString(); 
+        });
+        console.log('adrFinds: ' + JSON.stringify(adrFinds));
+
+        if (adrFinds.length > 0) {
+            res.send(adrFinds) // server response 
+        } else {
+            res.status(400).send("Public address not found")
+        }
+    } else if (lookup[0] === 'hash') {
+        const hashFinds = blockPool.filter(f => f.hash === lookup[1]);
+ 
+        hashFinds.forEach(function(obj) { 
+            obj.body.star.storyDecoded = (new Buffer(obj.body.star.story, 'hex')).toString(); 
+        });
+        console.log('hashFinds: ' + JSON.stringify(hashFinds));
+
+        if (hashFinds.length > 0) {
+            res.send(hashFinds) // server response 
+        } else {
+            res.status(400).send("Public address not found in blockchain")
+        } 
+    } else {
+        res.status(400).send("Request not found in blockchain")
+    }
 });
-
-
 
 
 
