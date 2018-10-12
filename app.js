@@ -268,38 +268,52 @@ app.get('/stars/:address', async (req, res) => {
     //4  does js shallow copy by default?  
 
     // TODO
-    //  need to handle multiple star ownership
-    //  need to handle coding/decoding
+    //
 
     console.log('----------------------------');
-    console.log('Received address lookup request: ' + req.params.address);
-    let lookupAddress = req.params.address.slice(8); //removing address: prefix
-    console.log('Lookup address: ' + lookupAddress);
-
-    const height = await blockchain.getBlockHeight();
-    //console.log('height is: ' + height);
+     //let lookupAddress = req.params.address.slice(8); //removing address: prefix
+    
+    console.log('Received request: ' + req.params.address);
+    let lookup  = req.params.address.split(':');
+    console.log('lookup prefix: ' + lookup[0]);
+    console.log('lookup value: ' + lookup[1]);
 
     const blockPool = await blockchain.getAllBlocks();
-    // console.log('blockPool length: ' + blockPool.length);
-    // console.log('blockPool last block: ' + JSON.stringify(blockPool[height]));
-    // console.log('blockPool height-1 block: ' + JSON.stringify(blockPool[height-1]));
-    // console.log('blockPool height-2 block: ' + JSON.stringify(blockPool[height-2]));
 
     blockPool.shift();
     // let blockPoolShift = Object.assign({}, blockPool);
     //console.log(Object.getOwnPropertyNames(blockPoolShift[height-1]));
 
-    const adrFinds = blockPool.filter(f => f.body.address === lookupAddress);
-    console.log('adrFinds: ' + JSON.stringify(adrFinds));
-    
-    if (adrFinds.length > 0) {
-        res.send(adrFinds) // server response 
+    if (lookup[0] === 'address') {
+        const adrFinds = blockPool.filter(f => f.body.address === lookup[1]);
+ 
+        adrFinds.forEach(function(obj) { 
+            obj.body.star.storyDecoded = (new Buffer(obj.body.star.story, 'hex')).toString(); 
+        });
+        console.log('adrFinds: ' + JSON.stringify(adrFinds));
+
+        if (adrFinds.length > 0) {
+            res.send(adrFinds) // server response 
+        } else {
+            res.status(400).send("Public address not found")
+        }
+    } else if (lookup[0] === 'hash') {
+        const hashFinds = blockPool.filter(f => f.hash === lookup[1]);
+ 
+        hashFinds.forEach(function(obj) { 
+            obj.body.star.storyDecoded = (new Buffer(obj.body.star.story, 'hex')).toString(); 
+        });
+        console.log('hashFinds: ' + JSON.stringify(hashFinds));
+
+        if (hashFinds.length > 0) {
+            res.send(hashFinds) // server response 
+        } else {
+            res.status(400).send("Public address not found in blockchain")
+        } 
     } else {
-        res.status(400).send("Public address not found")
+        res.status(400).send("Request not found in blockchain")
     }
 });
-
-
 
 
 
