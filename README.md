@@ -51,54 +51,12 @@ npm install <packagename> --save
 * bitcoinjs-message
 * bitcoinjs-lib
 
-<<<<<<< HEAD
 ## Test blockchain data
 
 In the chaindata folder, the chain used for testing contains a genesis block without a registered star, and 3 blocks with sample stars registered.  Blocks 1 & 3 were registered to the same public address.  
 
 
 ## API testing 
-=======
-Note installation of bitcoinjs-lib on Windows required the command: 
-
-```
-npm i --ignore-scripts bitcoinjs-lib --save
-```
-
-## API endpoints:
-
-### GET
-
-* */block - retrieve a block by number
-* */stars/ - retrieve ownership of star by address (:address) or retrieve block by hash (:hash)
-
-### POST
-
-* */requestValidation - send an address to initiate the star registration process, such as:
-```
-{"address" : "1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt"}
-```
-* */message-signature/validate - validate an address after address registered with /requestValidation endpoint:
-```
-{
-    "address": "1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt",
-    "signature": "IMlZ5l+v2BHm23JagQwaE0tbBmm+HEvdm8Ht0PGKl1yJcnDLj5ZzWCesDt08ynfy3UZrfga1jE838NOgMxzLLDa="
-}
-```
-* */block - submit star restration in format of:
-```
-{
-	"address": "1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt",
-	"star":{
-		"dec": "-25° 14' 8.2",
-		"ra": "17h 22m 13.1s",
-		"story": "This is a fake test star"
-	}
-}
-```
-
-## API testing
->>>>>>> 9a851b109aa672aef92a460c9b5227e113210a5b
 
 Since a front-end web UI does not exist yet, an API tester is used in place.  Postman & Curl are two options.  For development of this app, postman is used.  
 
