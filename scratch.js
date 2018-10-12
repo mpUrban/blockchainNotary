@@ -260,18 +260,49 @@ const level = require('level');
 
 let blockchain = new Blockchain();
 
+//let blockPool = blockchain.getAllBlocks2();
+//const blockPool = blockchain.getAllBlocks2(); 
+
+const testArray = blockchain.getAllBlocks2(); //promise
+testArray.then(function(result) {
+    //console.log('result:  ' + JSON.stringify(result[31]));
+    let blockPool2 = result;
+    console.log('blockPool2 length: ' + blockPool2.length);
+
+})
+console.log('array length is: ' + testArray.length);
+//console.log('blockPool2 length is: ' + blockPool2.length);
+
+//let blockPool2 = [];
+
+// blockPool.then(function(result) {
+//     console.log('result:  ' + JSON.stringify(result[31]));
+//     blockPool2 = result;
+// })
+
+//console.log(blockPool.length);
+
+//console.log('resultPool:  ' + JSON.stringify(blockPool2[31]));
+
+//console.log(JSON.stringify(blockPool[1]));
+
+
 // let testHeight = blockchain.getBlockHeight();
 // testHeight.then(function(result) {
 //     console.log('Test Block height: ' + result);
 // })
 
 
-let blockPool = blockchain.getAllBlocks();
-blockPool.then(function(result) {
-    //console.log('Test Block height: ' + result);
-})
+// let blockPool = blockchain.getAllBlocks();
+// blockPool.then(function(result) {
+//     //console.log('Test Block height: ' + result);
+//     blockPool = result;
+// })
+
+// const blockPool = blockchain.getAllBlocks();
+
+// //console.log(JSON.stringify(blockPool[testHeight]));
+// console.log(blockPool.length);
 
 
-//console.log(JSON.stringify(blockPool[testHeight]));
-console.log(blockPool.length);
 
