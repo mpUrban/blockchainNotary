@@ -90,7 +90,7 @@ With server running, navigate to [localhost:8000/block/0](http://localhost:8000/
 
 For testing of adding blocks through http POST, the application Postman is used.  
 
-Example of testing Postman:
+*Example of testing Postman:*
 ![alt text][postman]
 
 [postman]: https://github.com/mpUrban/privateBlockchainWithWebAPI/blob/master/postman_POSTtest1.PNG "Postman test example"
@@ -99,7 +99,7 @@ Example of testing Postman:
 
 Navigate to the address tab, right-click on the address used to submit for registration, and select 'Sign/verify Message.'  
 
-Example of signing with Electrum:
+*Example of signing with Electrum:*
 ![alt][signing]
 
 [signing]: https://github.com/mpUrban/blockchainNotary/blob/step-3/electrum_signing.PNG "Postman test example"
