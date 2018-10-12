@@ -94,3 +94,12 @@ Example of testing Postman:
 ![alt text][logo]
 
 [logo]: https://github.com/mpUrban/privateBlockchainWithWebAPI/blob/master/postman_POSTtest1.PNG "Postman test example"
+
+### Signing a message via Electrum Wallet
+
+Navigate to the address tab, right-click on the address used to submit for registration, and select 'Sign/verify Message.'  
+
+Example of signing with Electrum:
+![alt][logo]
+
+[logo]: https://github.com/mpUrban/blockchainNotary/blob/step-3/electrum_signing.PNG "Postman test example"
