@@ -53,7 +53,7 @@ npm install <packagename> --save
 In the chaindata folder, the chain used for testing contains a genesis block without a registered star, and 3 blocks with sample stars registered.  Blocks 1 & 3 were registered to the same public address.  
 
 
-## API testing
+## API testing 
 
 Since a front-end web UI does not exist yet, an API tester is used in place.  Postman & Curl are two options.  For development of this app, postman is used.  
 
