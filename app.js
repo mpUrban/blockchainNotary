@@ -85,7 +85,7 @@ app.post('/block', async (req, res) => {
         } else {
             res.status(400).json({
                 "status": 400,
-                message: "Public address not verified"
+                message: "Public address not verifiedk"
             })
         }
     }
@@ -156,9 +156,7 @@ app.post('/requestValidation', async (req, res) => {
                 mempool.push(resp);
             }
         }
-
         res.send(resp);
-
     }
 });
 
@@ -187,8 +185,6 @@ validPool = [];
 
 //validPool.push(statusTest);
 //console.log('validPool: ' + JSON.stringify(validPool[0]));
-
-
 
 app.post('/message-signature/validate', async (req, res) => {
     console.log('----------------------------');
@@ -264,10 +260,66 @@ app.post('/message-signature/validate', async (req, res) => {
 
 
 app.get('/stars/:address', async (req, res) => {
-    //need to find block corresponding to address
+    // LANDMINES
+    //1  address entering api has prefix to chop off
+    //2  old blocks in chain cause findIndex() method to fail
 
-    console.log(req.params.address);
+
+    //need to find block corresponding to address
+    console.log('----------------------------');
+    console.log('Received address lookup request: ' + req.params.address);
+    let lookupAddress = req.params.address.slice(8);
+    console.log('Lookup addres: ' + lookupAddress);
+
+    const height = await blockchain.getBlockHeight();
+    console.log('height is: ' + height);
+
+    const blockPool = await blockchain.getAllBlocks();
+    console.log('blockPool last block: ' + JSON.stringify(blockPool[height]));
+    console.log('blockPool length: ' + blockPool.length);
+    console.log(Object.getOwnPropertyNames(blockPool[height]));
+    console.log(Object.getOwnPropertyNames(blockPool[height].body));
+    console.log('blockPool last block address: ' + blockPool[height].body.address);
+    console.log('blockPool last block body: ' + JSON.stringify(blockPool[height].body));
+
+
+    //let testBody = blockPool[height].body;
+    //console.log(testBody.address);
+
+    let bodyArray = blockPool.map(a => a.body);
+
+    bodyArray2 = bodyArray.slice(height-5, height);
+    console.log('sliced body array length: ' + bodyArray2.length);
+
+
+    //console.log(Object.getOwnPropertyNames(bodyArray[height]));
+    //console.log('last block address from body array: ' + bodyArray[height].address);
+    let adrIdx = bodyArray2.findIndex(f => f.address === '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt');
+    console.log(adrIdx);
+
+    /////////////// need to remove previous blocks without address property !!!!!!
+
+
+
+
+    //let adrIdx = blockPool.findIndex(f => f.height === 31);
+    //let adrIdx = blockPool.findIndex(f => f.body.address === '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt');
+    //let adrIdx = testBody.findIndex(f => f.address === '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt');
+    //let adrIdx = blockPool.findIndex(f => f.body.address === lookupAddress);
     
+
+    //let adrIdx = blockPool.findIndex(f => f.body.address === req.params.address);
+    //console.log('address found at block: ' + adrIdx);
+
+    //var result = blockPool.map(a => a.body.address);
+
+    // let result = blockPool.filter(obj => {
+    //     return obj.body.address === req.params.address
+    //   })
+    // console.log(result)
+ 
+
+
     // const blockRes = await blockchain.getBlock(height);
     // if (blockRes) {
     //     res.send(blockRes) // server response 

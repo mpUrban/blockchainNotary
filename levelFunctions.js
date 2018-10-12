@@ -46,22 +46,22 @@ function getBlockHeight() {
 }
 
 
-function getAllBlocks() {
-  return new Promise((resolve, reject) => {
-    //let height = -1; 
-    blockPool = [];
-    db.createReadStream()
-      .on('data', (data) => {
-        //height++; 
-        blockPool.push(data);
-      })
-      .on('error', (err) => {
-        reject(err);
-      })
-      .on('close', () => {
-        resolve(blockPool);
-      });
-  });
-}
+// function getAllBlocks() {
+//   return new Promise((resolve, reject) => {
+//     //let height = -1; 
+//     blockPool = [];
+//     db.createReadStream()
+//       .on('data', (data) => {
+//         //height++; 
+//         blockPool.push(data);
+//       })
+//       .on('error', (err) => {
+//         reject(err);
+//       })
+//       .on('close', () => {
+//         resolve(blockPool);
+//       });
+//   });
+// }
 
-module.exports = { getBlock, getBlockHeight, addBlock, getAllBlocks};
+module.exports = { getBlock, getBlockHeight, addBlock };
