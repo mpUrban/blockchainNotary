@@ -77,7 +77,17 @@ npm i --ignore-scripts bitcoinjs-lib --save
     "signature": "IMlZ5l+v2BHm23JagQwaE0tbBmm+HEvdm8Ht0PGKl1yJcnDLj5ZzWCesDt08ynfy3UZrfga1jE838NOgMxzLLDa="
 }
 ```
-
+* */block - submit star restration in format of:
+```
+{
+	"address": "1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt",
+	"star":{
+		"dec": "-25° 14' 8.2",
+		"ra": "17h 22m 13.1s",
+		"story": "This is a fake test star"
+	}
+}
+```
 
 ## API testing
 
