@@ -119,13 +119,14 @@ app.post('/requestValidation', async (req, res) => {
         resp.address = req.body.address;
         resp.requestTimeStamp = nowTime;
         resp.message = resp.address + ':' + resp.requestTimeStamp + ':starRegistry';
+        console.log(resp.message);
         
         if (mempool.findIndex(f => f.address === req.body.address) === -1) {
             console.log('----------------------------');
             //console.log(mempool.findIndex(f => f.address === req.body.address));
             console.log('Address received: ' + (req.body.address));
             console.log('Request will only be valid for 5 minutes.');
-            console.log('Message to sign/verify: ' + (req.body.message));
+            console.log('Message to sign/verify: ' + (resp.message));
             console.log('Please validate at */message-signature/validate');
             console.log('Mempool length is: ' + mempool.length);
             console.log('');
@@ -201,7 +202,7 @@ app.post('/message-signature/validate', async (req, res) => {
             message: "A request for this address does not exist... submit at */requestValidation"
         })
     } else if (mempool.findIndex(f => f.address === req.body.address) >= 0) {
-        console.log(mempool.findIndex(f => f.address === req.body.address));
+        //console.log(mempool.findIndex(f => f.address === req.body.address));
         let reqIdx2 = mempool.findIndex(f => f.address === req.body.address);
         //console.log(reqIdx2);
 
@@ -262,70 +263,40 @@ app.post('/message-signature/validate', async (req, res) => {
 app.get('/stars/:address', async (req, res) => {
     // LANDMINES
     //1  address entering api has prefix to chop off
-    //2  old blocks in chain cause findIndex() method to fail
+    //2  old blocks in chain cause findIndex() method to fail - replace
+    //3  genesis block does not have all body properties for findIndex() to work
+    //4  does js shallow copy by default?  
 
+    // TODO
+    //  need to handle multiple star ownership
+    //  need to handle coding/decoding
 
-    //need to find block corresponding to address
     console.log('----------------------------');
     console.log('Received address lookup request: ' + req.params.address);
-    let lookupAddress = req.params.address.slice(8);
-    console.log('Lookup addres: ' + lookupAddress);
+    let lookupAddress = req.params.address.slice(8); //removing address: prefix
+    console.log('Lookup address: ' + lookupAddress);
 
     const height = await blockchain.getBlockHeight();
-    console.log('height is: ' + height);
+    //console.log('height is: ' + height);
 
     const blockPool = await blockchain.getAllBlocks();
-    console.log('blockPool last block: ' + JSON.stringify(blockPool[height]));
-    console.log('blockPool length: ' + blockPool.length);
-    console.log(Object.getOwnPropertyNames(blockPool[height]));
-    console.log(Object.getOwnPropertyNames(blockPool[height].body));
-    console.log('blockPool last block address: ' + blockPool[height].body.address);
-    console.log('blockPool last block body: ' + JSON.stringify(blockPool[height].body));
+    // console.log('blockPool length: ' + blockPool.length);
+    // console.log('blockPool last block: ' + JSON.stringify(blockPool[height]));
+    // console.log('blockPool height-1 block: ' + JSON.stringify(blockPool[height-1]));
+    // console.log('blockPool height-2 block: ' + JSON.stringify(blockPool[height-2]));
 
+    blockPool.shift();
+    // let blockPoolShift = Object.assign({}, blockPool);
+    //console.log(Object.getOwnPropertyNames(blockPoolShift[height-1]));
 
-    //let testBody = blockPool[height].body;
-    //console.log(testBody.address);
-
-    let bodyArray = blockPool.map(a => a.body);
-
-    bodyArray2 = bodyArray.slice(height-5, height);
-    console.log('sliced body array length: ' + bodyArray2.length);
-
-
-    //console.log(Object.getOwnPropertyNames(bodyArray[height]));
-    //console.log('last block address from body array: ' + bodyArray[height].address);
-    let adrIdx = bodyArray2.findIndex(f => f.address === '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt');
-    console.log(adrIdx);
-
-    /////////////// need to remove previous blocks without address property !!!!!!
-
-
-
-
-    //let adrIdx = blockPool.findIndex(f => f.height === 31);
-    //let adrIdx = blockPool.findIndex(f => f.body.address === '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt');
-    //let adrIdx = testBody.findIndex(f => f.address === '1KwJmv6KqMNwqZMqd9ZdVYJH9VZ1vnctFt');
-    //let adrIdx = blockPool.findIndex(f => f.body.address === lookupAddress);
+    const adrFinds = blockPool.filter(f => f.body.address === lookupAddress);
+    console.log('adrFinds: ' + JSON.stringify(adrFinds));
     
-
-    //let adrIdx = blockPool.findIndex(f => f.body.address === req.params.address);
-    //console.log('address found at block: ' + adrIdx);
-
-    //var result = blockPool.map(a => a.body.address);
-
-    // let result = blockPool.filter(obj => {
-    //     return obj.body.address === req.params.address
-    //   })
-    // console.log(result)
- 
-
-
-    // const blockRes = await blockchain.getBlock(height);
-    // if (blockRes) {
-    //     res.send(blockRes) // server response 
-    // } else {
-    //     res.status(404).send("Block Not Found")
-    // }
+    if (adrFinds.length > 0) {
+        res.send(adrFinds) // server response 
+    } else {
+        res.status(400).send("Public address not found")
+    }
 });
 
 

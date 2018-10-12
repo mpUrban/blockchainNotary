@@ -28,7 +28,7 @@ privateBlockchain.js - contains loop to add blocks, corrupt blocks, and test <br
 
 ## Folders:
 
-chainData - contains the current chain data <br> 
+chainData - contains the current chain data, 0 - genesis 1-3 are stars <br> 
 chaindata_allGood - contains a set of 10 valid blocks <br>
 chaindata_B2inv - contains 10 blocks where block 2 is invalid <br>
 
