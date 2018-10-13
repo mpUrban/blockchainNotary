@@ -38,6 +38,12 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/home.html')));
 
 app.get('/block/:id', async (req, res) => {
     const blockRes = await blockchain.getBlock(req.params.id);
+
+    //check if block has body.star.story property, then decode
+    if (blockRes.body.star) {
+        blockRes.body.star.storyDecoded = (new Buffer(blockRes.body.star.story, 'hex')).toString();
+    }
+
     if (blockRes) {
         res.send(blockRes) // server response 
     } else {
@@ -79,13 +85,16 @@ app.post('/block', async (req, res) => {
         if (starIdx >= 0) {
             req.body.star.story = new Buffer(req.body.star.story).toString('hex'); //hex-encoding
             await blockchain.addBlock(new Block(req.body));
+            //need to remove request from validPool
+            validPool.splice(starIdx);
             const height = await blockchain.getBlockHeight();
             const response = await blockchain.getBlock(height);
             res.send(response);
         } else {
+            console.log('Address is not or is no longer verified')
             res.status(400).json({
                 "status": 400,
-                message: "Public address not verifiedk"
+                message: "Public address not verified"
             })
         }
     }
@@ -208,16 +217,7 @@ app.post('/message-signature/validate', async (req, res) => {
 
         //if request isn't made, this will bomb the app
         let reqTimeStamp2 = mempool[reqIdx2].requestTimeStamp;
-        //console.log(mempool[reqIdx2].requestTimeStamp);
-        //console.log(reqTimeStamp2);
-
-        ///////////////////////////  testing, switch later
-        // since timestamp is part of message, need to hotwire in the matching timestamp
-
         let message2 = mempool[reqIdx2].message;
-        //let message2 = '142BDCeSGbXjWKaAnYXbMpZ6sbrSAo3DpZ:1532330740:starRegistry'
-        ///////////////////////////  testing, switch later
-        ///////////////////////////  testing, switch later
 
         let nowTime2 = new Date().getTime().toString().slice(0, -3)
         console.log('Timestamp of signature receipt: ' + nowTime2);
